@@ -1,0 +1,27 @@
+
+type GoogleMapsParams {
+  googleMapsBrowserKey: String
+}
+
+type ClientMessageTranslation {
+  es: String
+  en: String
+}
+
+type ClientPredefinedMessages {
+  "Predefined message code"
+  code: String!
+  translation: [ClientMessageTranslation]
+}
+
+type Params {   
+   GoogleMapsParams: GoogleMapsParams
+   ClientPredefinedMessages: [ClientPredefinedMessages]
+}
+
+"Business Contact info"
+type Query {
+   Params: Params @requireAuth
+   GoogleMapsParams: GoogleMapsParams @requireAuth  
+   ClientPredefinedMessages: ClientPredefinedMessages @requireAuth
+}

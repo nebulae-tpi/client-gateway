@@ -1,0 +1,11 @@
+type BusinessContactInfo {
+  name: String
+  whatsapp: BigInt
+  phone: BigInt
+  businessId: String    
+}
+
+"Business client Contact info"
+type Query {
+   BusinessContactInfo: BusinessContactInfo @requireAuth
+}

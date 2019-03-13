@@ -1,0 +1,125 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-client-gateway
+  labels:
+    run: api-client-gateway
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+    name: http-ws
+  selector:
+    run: api-client-gateway
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: api-client-gateway
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: api-client-gateway
+    spec:
+      containers:
+      - name: api-client-gateway
+        volumeMounts:
+        - name: google-application-credentials
+          mountPath: "/etc/GOOGLE_APPLICATION_CREDENTIALS"
+          readOnly: true
+        image: DOCKERHUB/clientgateway:0.0.1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        livenessProbe:
+          # # tcp probe
+          # tcpSocket:
+          #   port: 3000
+          # an http probe
+          httpGet:
+            path: /api/client-gateway/graphql/liveness
+            port: 3000
+          # length of time to wait for a pod to initialize
+          # after pod startup, before applying health checking
+          initialDelaySeconds: 5
+          timeoutSeconds: 10
+        resources:
+          requests:
+            cpu: "50m"
+        env:
+        - name: NODE_ENV
+          value: production
+        # GRAPHQL CONGIF      
+        - name: GRAPHQL_END_POINT_PORT
+          value: '3000'
+        - name: GRAPHQL_END_POINT_HOST
+          value: localhost
+        - name: GRAPHQL_HTTP_END_POINT
+          value: /api/client-gateway/graphql/http
+        - name: GRAPHIQL_HTTP_END_POINT
+          value: /api/client-gateway/graphql/http
+        - name: GRAPHQL_LIVENESS_HTTP_END_POINT
+          value: /api/client-gateway/graphql/liveness
+        - name: GRAPHQL_WS_END_POINT
+          value: /api/client-gateway/graphql/ws
+        # APOLLO ENGINE CONFIG
+        - name: APOLLO_ENGINE_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: apollo
+              key: engine_api_key
+        - name: APOLLO_ENGINE_LOG_LEVEL
+          value: WARN         
+        # GCLOUD PUB_SUB CONGIF       
+        - name: BROKER_TYPE
+          value: PUBSUB         
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /etc/GOOGLE_APPLICATION_CREDENTIALS/gcloud-service-key.json  
+        - name: GCLOUD_PROJECT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: environment-variables
+              key: gcloud-project-id
+          #value: nebulae-tpi-229423
+        - name: GATEWAY_REPLIES_TOPIC
+          value: client-gateway-replies
+        - name: GATEWAY_REPLIES_TOPIC_SUBSCRIPTION
+          value: client-gateway-replies
+        - name: GATEWAY_EVENTS_TOPIC
+          value: events
+        - name: GATEWAY_EVENTS_TOPIC_SUBSCRIPTION
+          value: events-client-gateway
+        - name: GATEWAY_MATERIALIZED_VIEW_UPDATES_TOPIC
+          value: client-gateway-materialized-view-updates
+        - name: GATEWAY_MATERIALIZED_VIEW_UPDATES_TOPIC_SUBSCRIPTION
+          value: client-gateway-materialized-view-updates-client-gateway
+        - name: REPLY_TIMEOUT
+          value: '2000'
+        - name: GOOGLE_MAPS_ANDROID_KEY
+          valueFrom:
+           secretKeyRef:
+             name: client-app-link
+             key: GOOGLE_MAPS_ANDROID_KEY
+        - name: GOOGLE_MAPS_BROWSER_KEY
+          valueFrom:
+           secretKeyRef:
+             name: client-app-link
+             key: GOOGLE_MAPS_BROWSER_KEY
+        - name: PREDEFINED_MESSAGES_CLIENT
+          value: {"messages": [{"code": 1, "translation": {"es": "test", "en": "test"}}]}
+        # JWT CONGIF        
+        - name: JWT_PUBLIC_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: keycloak-jwt-public-key
+              key: jwt_public_key
+          #value: -----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyGMYfhPX7A5kAaBh9smoyDhj7Ilv0YfsPygnkEUDu44teqPzZhNjoLnAyDED3J7AhGJpOHlSzfC+7jrXXbUVczTP7vhH1pa1RXX4TIhzqo5R9NNKhREK39s6gezsP6SbCfu1XvaT1TVPEPBHho8q3qyICWFtoWTtx1tkk99jFz6zFFeIU2sTVAuf9+q1bawuHY42yU66/iaBP3zEtqLjtl7OO9z8wnIlaHW8zo20taFPeQy5xbmUaVUfEwQ6zoJCcSU2W79r2gFPWSfsXCJ07nfZIl0aWnOV7tRJLkJWsOL6EgFIh3P2v9d/SmLEVpje7kiibVUFqMg7ipRrruMzdwIDAQAB\n-----END PUBLIC KEY-----          
+              
+      volumes:
+      - name: google-application-credentials
+        secret:
+          secretName: google-application-credentials

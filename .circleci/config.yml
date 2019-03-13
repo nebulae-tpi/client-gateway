@@ -1,0 +1,113 @@
+
+version: 2.1
+jobs:
+  build-api:    
+    working_directory: /tmp
+    docker:
+      - image: circleci/node:10.12.0
+        command: bash
+    steps:
+      - run:
+          name: Installing NebulaE cli & Compose API
+          command: |
+            echo $GCP_SERVICE_ACCOUNT_DEV | base64 --decode --ignore-garbage > /tmp/gcloud-service-key.json
+            npm config set prefix '~/.npm-global'
+            export PATH=~/.npm-global/bin:$PATH
+            source ~/.profile
+            npm install -g @nebulae/cli
+            nebulae compose-api production --api-type=NEBULAE_GATEWAY --api-repo="https://github.com/nebulae-tpi/client-gateway.git" --api-id="client-gateway" --output-dir="/tmp/nebulae/client-gateway/" --store-type=GCP_DATASTORE --gcp-service-account-token=/tmp/gcloud-service-key.json      
+            ls /tmp/nebulae/client-gateway
+      - persist_to_workspace:
+          root: /tmp/nebulae
+          paths:
+            - client-gateway    
+  build-docker:
+    working_directory: /tmp
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout:
+          path: /tmp/repo
+      - setup_remote_docker
+      - attach_workspace:
+          at: /tmp
+      - run:
+          name:  build & push docker-hub
+          command: |      
+            ls /tmp/client-gateway/
+            export DOCKERHUB_NAMESPACE=$DOCKERHUB_NAMESPACE
+            export DOCKERHUB_USER=$DOCKERHUB_USER
+            export DOCKERHUB_PASS=$DOCKERHUB_PASS
+            export API_SHELL_PATH=/tmp/
+            cd /tmp/repo
+            sh /tmp/repo/deployment/docker/build-docker-hub.sh
+  deploy-dev:
+    working_directory: /tmp/workspace
+    docker:
+      - image: google/cloud-sdk:latest
+    steps:
+      - checkout
+      - run:
+            name: Setup gcloud & kubectl
+            command: |
+              echo $GCP_SERVICE_ACCOUNT_DEV | base64 --decode --ignore-garbage > /root/gcloud-service-key.json
+              gcloud auth activate-service-account --key-file /root/gcloud-service-key.json            
+              gcloud --quiet config set project $GKE_PROJECT_DEV
+              gcloud --quiet config set compute/zone $GKE_ZONE_DEV
+              gcloud --quiet container clusters get-credentials $GKE_CLUSTER
+      - run:
+            name: Deploy on Kubernetes
+            command: |
+              for xi in $(ls /tmp/workspace/deployment/gke/*.y*ml); do sed -i s/DOCKERHUB/$DOCKERHUB_NAMESPACE/ $xi ; done
+              kubectl apply -f /tmp/workspace/deployment/gke/
+workflows:
+  version: 2.1
+  build-and-deploy:
+    jobs:
+      - build-api:
+          context: TPI
+          filters:
+            branches:
+              only:
+                - develop
+      - build-docker:
+          context: TPI
+          requires:
+            - build-api
+          filters:
+            branches:
+              only:
+                - develop
+      - deploy-dev:
+          context: TPI
+          requires:
+            - build-docker
+          filters:
+            branches:
+              only:
+                - develop
+      - build-api:
+          context: TPI_PROD
+          name: build-api-prod
+          filters:
+            branches:
+              only:
+                - master
+      - build-docker:
+          context: TPI_PROD
+          name: build-docker-prod
+          requires:
+            - build-api-prod
+          filters:
+            branches:
+              only:
+                - master
+      - deploy-dev:
+          context: TPI_PROD
+          name: deploy-dev-prod
+          requires:
+            - build-docker-prod
+          filters:
+            branches:
+              only:
+                - master
