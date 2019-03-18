@@ -31,7 +31,7 @@ spec:
         - name: google-application-credentials
           mountPath: "/etc/GOOGLE_APPLICATION_CREDENTIALS"
           readOnly: true
-        image: DOCKERHUB/clientgateway:0.0.2
+        image: DOCKERHUB/clientgateway:0.0.3
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
@@ -110,7 +110,7 @@ spec:
              name: client-app-link
              key: GOOGLE_MAPS_BROWSER_KEY
         - name: PREDEFINED_MESSAGES_CLIENT
-          value: {"messages": [{"code": 1, "translation": {"es": "test", "en": "test"}}]}
+          value: '{"messages": [{"code": 1, "translation": {"es": "test", "en": "test"}}]}'
         # JWT CONGIF        
         - name: JWT_PUBLIC_KEY
           valueFrom:
