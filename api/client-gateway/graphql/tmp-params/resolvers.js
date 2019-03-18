@@ -20,8 +20,8 @@ module.exports = {
 
     GoogleMapsParams: (root, args, context, info) => {
       return of({
-        googleMapsAndroidKey: process.env.GOOGLE_MAPS_ANDROID_KEY,
-        googleMapsBrowserKey: process.env.GOOGLE_MAPS_BROWSER_KEY
+        //googleMapsAndroidKey: process.env.GOOGLE_MAPS_ANDROID_KEY,
+        googleMapsBrowserKey: ''
       }).toPromise()
     },
 
