@@ -17,6 +17,5 @@ type PredefinedMessages {
 "Business Contact info"
 type Query {
   #  Params: Params @requireAuth
-  #  GoogleMapsParams: GoogleMapsParams @requireAuth  
   PredefinedMessages: PredefinedMessages @requireAuth
 }
