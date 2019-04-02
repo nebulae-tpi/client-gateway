@@ -36,12 +36,7 @@ module.exports = {
     PredefinedMessages: (root, args, context, info) => {
       return of(buildPredefinedMessagesClient())
       .toPromise()
-    },
-
-    // DriverPredefinedMessages: (root, args, context, info) => {
-    //   return of(buildPredefinedMessagesDriver())
-    //   .toPromise()
-    // },
+    }
   },
 }
 
