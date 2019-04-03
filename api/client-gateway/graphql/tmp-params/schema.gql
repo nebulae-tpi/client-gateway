@@ -7,7 +7,7 @@ type PredefinedMessages {
   "Predefined message code"
   code: String!
   type: String!
-  translation: [ClientMessageTranslation]
+  translation: ClientMessageTranslation
 }
 
 # type Params {
@@ -17,5 +17,5 @@ type PredefinedMessages {
 "Business Contact info"
 type Query {
   #  Params: Params @requireAuth
-  PredefinedMessages: PredefinedMessages @requireAuth
+  PredefinedMessages: [PredefinedMessages] @requireAuth
 }
