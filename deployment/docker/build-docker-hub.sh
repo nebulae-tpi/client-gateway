@@ -1,6 +1,6 @@
 #!/bin/bash
 export DOCKERHUB_IMAGE=clientgateway
-export DOCKERHUB_TAG=0.0.11
+export DOCKERHUB_TAG=0.0.12
 
 rm -rf deployment/docker/client-gateway/
 cp -R $API_SHELL_PATH/client-gateway deployment/docker/client-gateway

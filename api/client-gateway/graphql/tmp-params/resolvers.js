@@ -8,7 +8,6 @@ const buildPredefinedMessages = () => {
 }
 
 module.exports = {
-
   Query: {
 
     PredefinedMessages: (root, args, context, info) => {
