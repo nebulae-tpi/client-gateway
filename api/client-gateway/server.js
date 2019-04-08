@@ -104,7 +104,7 @@ const server = new ApolloServer({
     },
     subscriptions: {
         path: process.env.GRAPHQL_WS_END_POINT,
-        keepAlive: 20000,
+        keepAlive: 20,
         onConnect: async (connectionParams, webSocket, connectionContext) => {           
             console.log(`GraphQL_WS.onConnect: origin=${connectionContext.request.headers.origin} url=${connectionContext.request.url}`);
             const encondedToken$ = connectionParams.authToken
