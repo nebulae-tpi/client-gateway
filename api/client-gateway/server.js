@@ -94,6 +94,7 @@ const server = new ApolloServer({
         }
 	},
     introspection: true,
+    debug: true,
     //playground: true,
     playground: {
       endpoint: process.env.GRAPHIQL_HTTP_END_POINT,
