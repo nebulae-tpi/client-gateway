@@ -20,5 +20,5 @@ type Query {
   PredefinedMessages: [PredefinedMessages] @requireAuth
 
   "get the fare per kilometer on trip"
-  priceByKilometerOnTrip: Int
+  pricePerKilometerOnTrip: Int @requireAuth
 }

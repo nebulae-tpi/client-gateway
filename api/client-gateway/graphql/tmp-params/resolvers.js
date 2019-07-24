@@ -44,7 +44,7 @@ module.exports = {
     PredefinedMessages: (root, args, context, info) => {
       return of(buildPredefinedMessages()).toPromise();
     },
-    priceByKilometerOnTrip:(root, args, context, info) => {
+    pricePerKilometerOnTrip:(root, args, context, info) => {
       return getFareValuePerKilometer();
     }
 
