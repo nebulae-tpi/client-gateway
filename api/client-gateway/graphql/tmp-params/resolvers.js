@@ -12,6 +12,7 @@ const buildPredefinedMessages = () => {
   return predefinedMessages.messages;
 };
 
+
 function getFareValuePerKilometer() {  
   
   let isPeakHour = false;
