@@ -18,4 +18,7 @@ type PredefinedMessages {
 type Query {
   #  Params: Params @requireAuth
   PredefinedMessages: [PredefinedMessages] @requireAuth
+
+  "get the fare per kilometer on trip"
+  priceByKilometerOnTrip: Int
 }
