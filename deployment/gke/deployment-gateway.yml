@@ -31,7 +31,7 @@ spec:
         - name: google-application-credentials
           mountPath: "/etc/GOOGLE_APPLICATION_CREDENTIALS"
           readOnly: true
-        image: DOCKERHUB/clientgateway:0.0.17
+        image: DOCKERHUB/clientgateway:0.0.18
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
@@ -102,9 +102,9 @@ spec:
         - name: PREDEFINED_MESSAGES_CLIENT
           value: '{"messages":[{"code":1,"translation":{"es":"Estoy esperando","en":"I am waiting."},"type":"CLIENT"},{"code":2,"translation":{"es":"Estoy en camino","en":"I am on my way"},"type":"CLIENT"},{"code":3,"translation":{"es":"Esperame por 5 min.","en":"Wait for me for 5 min."},"type":"CLIENT"},{"code":4,"translation":{"es":"OK","en":"OK"},"type":"CLIENT"}]}'
         - name: PEAK_HOUR_FARE_PER_KILOMETER
-          value: 1410
+          value: "1410"
         - name: OFF_PEAK_HOUR_FARE_PER_KILOMETER
-          value: 1310
+          value: "1310"
         - name: PEAK_HOURS
           value: '["6:00,9:00", "11:00,13:30", "17:00, 18:40"]'
         # JWT CONFIG
