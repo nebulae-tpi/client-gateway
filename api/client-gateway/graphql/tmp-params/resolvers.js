@@ -40,6 +40,7 @@ function getFareValuePerKilometer() {
 }
 
 
+
 module.exports = {
   Query: {
     PredefinedMessages: (root, args, context, info) => {
