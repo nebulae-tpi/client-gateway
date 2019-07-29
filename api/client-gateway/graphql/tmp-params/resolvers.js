@@ -39,6 +39,7 @@ function getFareValuePerKilometer() {
   return isPeakHour ? PEAK_HOUR_FARE_PER_KILOMETER : OFF_PEAK_HOUR_FARE_PER_KILOMETER;
 }
 
+
 module.exports = {
   Query: {
     PredefinedMessages: (root, args, context, info) => {
@@ -47,8 +48,5 @@ module.exports = {
     pricePerKilometerOnTrip:(root, args, context, info) => {
       return getFareValuePerKilometer();
     }
-
-
-
   }
 };
