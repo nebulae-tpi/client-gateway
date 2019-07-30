@@ -10,6 +10,11 @@ type PredefinedMessages {
   translation: ClientMessageTranslation
 }
 
+type FareSettings{
+  valuePerKilometer: Int
+  additionalCost: Int
+}
+
 # type Params {
 #    ClientPredefinedMessages: [ClientPredefinedMessages]
 # }
@@ -20,5 +25,5 @@ type Query {
   PredefinedMessages: [PredefinedMessages] @requireAuth
 
   "get the fare per kilometer on trip"
-  pricePerKilometerOnTrip: Int @requireAuth
+  fareSettings: FareSettings @requireAuth
 }
