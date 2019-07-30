@@ -19,7 +19,7 @@ const buildPredefinedMessages = () => {
 };
 
 
-function getFareValuePerKilometer() {
+function getFareSettings() {
   let isPeakHour = false;
   PEAK_HOURS.forEach(timerange => {
     let [initialTime, finalTime] = timerange.split(",");
@@ -75,8 +75,8 @@ module.exports = {
     PredefinedMessages: (root, args, context, info) => {
       return of(buildPredefinedMessages()).toPromise();
     },
-    pricePerKilometerOnTrip:(root, args, context, info) => {
-      return getFareValuePerKilometer();
+    fareSettings:(root, args, context, info) => {
+      return getFareSettings();
     }
   }
 };
