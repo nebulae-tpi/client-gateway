@@ -4,10 +4,14 @@ const request = require("request");
 const gregorian = require("weeknumber");
 
 const PEAK_HOURS = JSON.parse(process.env.PEAK_HOURS) || ["6:00,9:00", "11:00,13:30", "17:00, 18:40"];
-const NIGHT_SURCHARGE_VALUE = JSON.parse(process.env.PEAK_HOURS) || 700;
-const NIGHT_SURCHARGE_HOURS = JSON.parse(process.env.PEAK_HOURS) || ["18:00,23:59", "0:00,6:000"];
+
 const PEAK_HOUR_FARE_PER_KILOMETER = parseInt(process.env.PEAK_HOUR_FARE_PER_KILOMETER) ||  1410;
 const OFF_PEAK_HOUR_FARE_PER_KILOMETER = parseInt(process.env.OFF_PEAK_HOUR_FARE_PER_KILOMETER) ||  1310;
+
+const NIGHT_SURCHARGE_VALUE = JSON.parse(process.env.NIGHT_SURCHARGE_VALUE) || 700;
+const NIGHT_SURCHARGE_HOURS = JSON.parse(process.env.NIGHT_SURCHARGE_HOURS) || ["18:00,23:59", "0:00,6:000"];
+
+const MINIMAL_TRIP_COST =  JSON.parse(process.env.MINIMAL_TRIP_COST) || 4000;
 
 const buildPredefinedMessages = () => {
   const predefinedMessages = JSON.parse(process.env.PREDEFINED_MESSAGES_CLIENT);
@@ -58,7 +62,8 @@ function getFareValuePerKilometer() {
 
   return {
     valuePerKilometer: isPeakHour ? PEAK_HOUR_FARE_PER_KILOMETER : OFF_PEAK_HOUR_FARE_PER_KILOMETER,
-    additionalCost
+    additionalCost,
+    minimalTripCost: MINIMAL_TRIP_COST
   }
 
 }

@@ -12,7 +12,8 @@ type PredefinedMessages {
 
 type FareSettings{
   valuePerKilometer: Int
-  additionalCost: Int
+  additionalCost: Int,
+  minimalTripCost: Int
 }
 
 # type Params {

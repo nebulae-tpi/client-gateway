@@ -107,6 +107,12 @@ spec:
           value: "1310"
         - name: PEAK_HOURS
           value: '["6:00,9:00", "11:00,13:30", "17:00, 18:40"]'
+        - name: NIGHT_SURCHARGE_VALUE
+          value: "700"
+        - name: NIGHT_SURCHARGE_HOURS
+          value: '["18:00,23:59", "0:00,6:000"]'
+        - name: MINIMAL_TRIP_COST
+          value: "4000"
         # JWT CONFIG
         - name: JWT_PUBLIC_KEY
           valueFrom:
