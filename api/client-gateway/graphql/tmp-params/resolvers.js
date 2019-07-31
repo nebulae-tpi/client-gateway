@@ -40,8 +40,7 @@ function getFareSettings() {
     }
   });
 
-  let additionalCost = 0;
-  NIGHT_SURCHARGE_HOURS.forEach(timerange => {
+  const nightHours = NIGHT_SURCHARGE_HOURS.filter(timerange => {
     let [initialTime, finalTime] = timerange.split(",");
 
     let initialTimeHour = parseInt(initialTime.split(":")[0]);
@@ -54,15 +53,13 @@ function getFareSettings() {
     finalTime = new Date(new Date().toLocaleString("es-CO", {timeZone: "America/Bogota"}))
       .setHours(finalTimeHours, finalTimeMinutes, 0, 0);
 
-    if (Date.now() >= initialTime && Date.now() < finalTime) {
-      additionalCost = NIGHT_SURCHARGE_VALUE;
-    }
+    return (Date.now() >= initialTime && Date.now() < finalTime)
 
   })
 
   return {
     valuePerKilometer: isPeakHour ? PEAK_HOUR_FARE_PER_KILOMETER : OFF_PEAK_HOUR_FARE_PER_KILOMETER,
-    additionalCost,
+    additionalCost: nightHours.length > 0 ? NIGHT_SURCHARGE_VALUE : 0,
     minimalTripCost: MINIMAL_TRIP_COST
   }
 
