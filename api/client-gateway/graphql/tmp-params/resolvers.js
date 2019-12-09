@@ -21,6 +21,7 @@ const buildPredefinedMessages = () => {
 
 function getFareSettings() {
   let isPeakHour = false;
+  
   PEAK_HOURS.forEach(timerange => {
     let [initialTime, finalTime] = timerange.split(",");
 
