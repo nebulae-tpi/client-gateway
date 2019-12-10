@@ -46,6 +46,7 @@ function getFareSettings() {
 
     let initialTimeHour = parseInt(initialTime.split(":")[0]);
     let initialTimeMinutes = parseInt(initialTime.split(":")[1]);
+
     initialTime = new Date(new Date().toLocaleString("es-CO", {timeZone: "America/Bogota"}))
       .setHours(initialTimeHour, initialTimeMinutes, 0, 0);
 
@@ -54,9 +55,10 @@ function getFareSettings() {
     finalTime = new Date(new Date().toLocaleString("es-CO", {timeZone: "America/Bogota"}))
       .setHours(finalTimeHours, finalTimeMinutes, 0, 0);
 
-    return (Date.now() >= initialTime && Date.now() < finalTime)
+      console.log(initialTime, finalTime);
+    return ( Date.now() >= initialTime && Date.now() < finalTime);
 
-  })
+  });
 
   return {
     valuePerKilometer: isPeakHour ? PEAK_HOUR_FARE_PER_KILOMETER : OFF_PEAK_HOUR_FARE_PER_KILOMETER,
