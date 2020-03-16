@@ -9,14 +9,14 @@ module.exports = {
       const businessInits = [
         {
           name: 'NebulaE',
-          whatsapp: 573004832728,
-          phone: 3004832728,
+          whatsapp: 573108942249,
+          phone: 3108942249,
           businessId: '423f-54a3-434a-645b'
         },
         {
           name: 'TxPlus Manizales',
-          whatsapp: 573004832728,
-          phone: 3004832728,
+          whatsapp: 573108942249,
+          phone: 3108942249,
           businessId: 'b19c067e-57b4-468f-b970-d0101a31cacb'
         }
       ];
@@ -28,8 +28,8 @@ module.exports = {
       return of(
         {
           name: 'NebulaE',
-          whatsapp: 573004832728,
-          phone: 3004832728,
+          whatsapp: 573108942249,
+          phone: 3108942249,
           businessId: '423f-54a3-434a-645b'
         }
       ).toPromise()
