@@ -35,6 +35,8 @@ const locationVsBusinessMap = [
   }
 ];
 
+console.log("locationVsBusinessMap", JSON.stringify(locationVsBusinessMap));
+
 
 function distanceBetweenTwoPoint(origin, destination){
 
@@ -49,8 +51,11 @@ function distanceBetweenTwoPoint(origin, destination){
 function getFareSettings(args) {
   console.log(args);
   const { lat, lng } = args;
+
   console.log("PARAMS:", { lat, lng });
   console.log("locationVsBusinessMap", JSON.stringify(locationVsBusinessMap));
+
+  
   let isPeakHour = false;
   
   PEAK_HOURS.forEach(timerange => {
