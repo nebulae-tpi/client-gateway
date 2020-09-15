@@ -22,21 +22,18 @@ const locationVsBusinessMap = [
   // CALI
   {
     name: "TPI_CALI",
-    latLng: { lat: 5.06317, lng: -75.49798 },
+    latLng: { lat: 3.4292000, lng: -76.5218500 },
     farePeakHour: PEAK_HOUR_FARE_PER_KILOMETER_MAP["75cafa6d-0f27-44be-aa27-c2c82807742d"].peakHourPerKilometer,
     fareOffPeakHour: PEAK_HOUR_FARE_PER_KILOMETER_MAP["75cafa6d-0f27-44be-aa27-c2c82807742d"].offPeakHourPerKilometer
   },
   // MANIZALES
   {
     name: "TPI_MANIZALES",
-    latLng: { lat: 3.42920, lng: -76.52185 },
+    latLng: { lat: 5.0631000, lng: -75.4979800 },
     farePeakHour: PEAK_HOUR_FARE_PER_KILOMETER_MAP["b19c067e-57b4-468f-b970-d0101a31cacb"].peakHourPerKilometer,
     fareOffPeakHour: PEAK_HOUR_FARE_PER_KILOMETER_MAP["b19c067e-57b4-468f-b970-d0101a31cacb"].offPeakHourPerKilometer
   }
 ];
-
-console.log("locationVsBusinessMap", JSON.stringify(locationVsBusinessMap));
-
 
 function distanceBetweenTwoPoint(origin, destination){
 
@@ -49,13 +46,9 @@ function distanceBetweenTwoPoint(origin, destination){
 
 
 function getFareSettings(args) {
-  console.log(args);
   const { lat, lng } = args;
 
-  console.log("PARAMS:", { lat, lng });
-  console.log("locationVsBusinessMap", JSON.stringify(locationVsBusinessMap));
 
-  
   let isPeakHour = false;
   
   PEAK_HOURS.forEach(timerange => {
@@ -83,12 +76,12 @@ function getFareSettings(args) {
     let initialTimeHour = parseInt(initialTime.split(":")[0]);
     let initialTimeMinutes = parseInt(initialTime.split(":")[1]);
 
-    initialTime = new Date(new Date().toLocaleString("es-CO", {timeZone: "America/Bogota"}))
+    initialTime = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Bogota"}))
       .setHours(initialTimeHour, initialTimeMinutes, 0, 0);
 
     let finalTimeHours = parseInt(finalTime.split(":")[0]);
     let finalTimeMinutes = parseInt(finalTime.split(":")[1]);
-    finalTime = new Date(new Date().toLocaleString("es-CO", {timeZone: "America/Bogota"}))
+    finalTime = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Bogota"}))
       .setHours(finalTimeHours, finalTimeMinutes, 0, 0);
 
       console.log(initialTime, finalTime);
@@ -99,19 +92,15 @@ function getFareSettings(args) {
   const closestCity = locationVsBusinessMap
     .map(conf => ({ 
       ...conf, 
-      distance: distanceBetweenTwoPoint({ lat, lng }, conf.latLng )
+      distance: distanceBetweenTwoPoint({ lat, lng }, { ...conf.latLng }) // distanceBetweenTwoPoint({ lat, lng }, conf.latLng )
     }))
     .sort((a, b) => a.distance - b.distance)[0];
-
-  console.log("closestCity", closestCity );
-
-
+    
 
   return {
-    // valuePerKilometer: isPeakHour 
-    //   ? closestCity.farePeakHour 
-    //   : closestCity.fareOffPeakHour,
-    valuePerKilometer: 1150,
+    valuePerKilometer: isPeakHour 
+      ? closestCity.farePeakHour 
+      : closestCity.fareOffPeakHour,
     additionalCost: nightHours.length > 0 ? NIGHT_SURCHARGE_VALUE : 0,
     minimalTripCost: MINIMAL_TRIP_COST
   }
