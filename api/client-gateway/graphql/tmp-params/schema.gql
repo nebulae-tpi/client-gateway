@@ -26,5 +26,5 @@ type Query {
   PredefinedMessages: [PredefinedMessages] @requireAuth
 
   "get the fare per kilometer on trip"
-  fareSettings: FareSettings @requireAuth
+  FareSettings(lat: Float, lng: Float): FareSettings @requireAuth
 }

@@ -31,7 +31,7 @@ spec:
         - name: google-application-credentials
           mountPath: "/etc/GOOGLE_APPLICATION_CREDENTIALS"
           readOnly: true
-        image: DOCKERHUB/clientgateway:0.0.33
+        image: DOCKERHUB/clientgateway:0.0.34
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
@@ -100,11 +100,9 @@ spec:
         - name: REPLY_TIMEOUT
           value: '2000'
         - name: PREDEFINED_MESSAGES_CLIENT
-          value: '{"messages":[{"code":1,"translation":{"es":"Estoy esperando","en":"I am waiting."},"type":"CLIENT"},{"code":2,"translation":{"es":"Estoy en camino","en":"I am on my way"},"type":"CLIENT"},{"code":3,"translation":{"es":"Esperame por 5 min.","en":"Wait for me for 5 min."},"type":"CLIENT"},{"code":4,"translation":{"es":"OK","en":"OK"},"type":"CLIENT"}]}'
-        - name: PEAK_HOUR_FARE_PER_KILOMETER
-          value: "1150"
-        - name: OFF_PEAK_HOUR_FARE_PER_KILOMETER
-          value: "1150"
+          value: '{"messages":[{"code":1,"translation":{"es":"Estoy esperando","en":"I am waiting."},"type":"CLIENT"},{"code":2,"translation":{"es":"Estoy en camino","en":"I am on my way"},"type":"CLIENT"},{"code":3,"translation":{"es":"Esperame por 5 min.","en":"Wait for me for 5 min."},"type":"CLIENT"},{"code":4,"translation":{"es":"OK","en":"OK"},"type":"CLIENT"}]}'        
+        - name: PEAK_HOUR_FARE_PER_KILOMETER_MAP
+          value: '{"75cafa6d-0f27-44be-aa27-c2c82807742d": {"peakHourPerKilometer": 1150, "offPeakHourPerKilometer": 1150}, "b19c067e-57b4-468f-b970-d0101a31cacb": { "peakHourPerKilometer": 1400, "offPeakHourPerKilometer": 1400} }'
         - name: PEAK_HOURS
           value: '["6:00,9:00", "11:00,13:30", "17:00,18:40"]'
         - name: NIGHT_SURCHARGE_VALUE

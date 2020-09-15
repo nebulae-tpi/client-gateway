@@ -5,8 +5,7 @@ const gregorian = require("weeknumber");
 
 const PEAK_HOURS = JSON.parse(process.env.PEAK_HOURS);
 
-const PEAK_HOUR_FARE_PER_KILOMETER = parseInt(process.env.PEAK_HOUR_FARE_PER_KILOMETER);
-const OFF_PEAK_HOUR_FARE_PER_KILOMETER = parseInt(process.env.OFF_PEAK_HOUR_FARE_PER_KILOMETER);
+const PEAK_HOUR_FARE_PER_KILOMETER_MAP = JSON.parse(process.env.PEAK_HOUR_FARE_PER_KILOMETER_MAP || "{}");
 
 const NIGHT_SURCHARGE_VALUE = parseInt(process.env.NIGHT_SURCHARGE_VALUE);
 const NIGHT_SURCHARGE_HOURS = JSON.parse(process.env.NIGHT_SURCHARGE_HOURS);
@@ -19,8 +18,39 @@ const buildPredefinedMessages = () => {
 };
 
 
+const locationVsBusinessMap = [
+  // CALI
+  {
+    name: "TPI_CALI",
+    latLng: { lat: 5.06317, lng: -75.49798 },
+    farePeakHour: PEAK_HOUR_FARE_PER_KILOMETER_MAP["75cafa6d-0f27-44be-aa27-c2c82807742d"].peakHourPerKilometer,
+    fareOffPeakHour: PEAK_HOUR_FARE_PER_KILOMETER_MAP["75cafa6d-0f27-44be-aa27-c2c82807742d"].offPeakHourPerKilometer
+  },
+  // MANIZALES
+  {
+    name: "TPI_MANIZALES",
+    latLng: { lat: 3.42920, lng: -76.52185 },
+    farePeakHour: PEAK_HOUR_FARE_PER_KILOMETER_MAP["b19c067e-57b4-468f-b970-d0101a31cacb"].peakHourPerKilometer,
+    fareOffPeakHour: PEAK_HOUR_FARE_PER_KILOMETER_MAP["b19c067e-57b4-468f-b970-d0101a31cacb"].offPeakHourPerKilometer
+  }
+];
 
-function getFareSettings() {
+
+function distanceBetweenTwoPoint(origin, destination){
+
+  const diffLat = (origin.lat * 100) - (destination.lat * 100);
+  const diffLng = (origin.lng * 100) - (destination.lng * 100);
+
+  return Math.sqrt( Math.pow(diffLat, 2) + Math.pow(diffLng, 2) );
+
+}
+
+
+function getFareSettings(args) {
+  console.log(args);
+  const { lat, lng } = args;
+  console.log("PARAMS:", { lat, lng });
+  console.log("locationVsBusinessMap", JSON.stringify(locationVsBusinessMap));
   let isPeakHour = false;
   
   PEAK_HOURS.forEach(timerange => {
@@ -61,8 +91,22 @@ function getFareSettings() {
 
   });
 
+  const closestCity = locationVsBusinessMap
+    .map(conf => ({ 
+      ...conf, 
+      distance: distanceBetweenTwoPoint({ lat, lng }, conf.latLng )
+    }))
+    .sort((a, b) => a.distance - b.distance)[0];
+
+  console.log("closestCity", closestCity );
+
+
+
   return {
-    valuePerKilometer: isPeakHour ? PEAK_HOUR_FARE_PER_KILOMETER : OFF_PEAK_HOUR_FARE_PER_KILOMETER,
+    // valuePerKilometer: isPeakHour 
+    //   ? closestCity.farePeakHour 
+    //   : closestCity.fareOffPeakHour,
+    valuePerKilometer: 1150,
     additionalCost: nightHours.length > 0 ? NIGHT_SURCHARGE_VALUE : 0,
     minimalTripCost: MINIMAL_TRIP_COST
   }
@@ -76,8 +120,8 @@ module.exports = {
     PredefinedMessages: (root, args, context, info) => {
       return of(buildPredefinedMessages()).toPromise();
     },
-    fareSettings:(root, args, context, info) => {
-      return getFareSettings();
+    FareSettings:(root, args, context, info) => {
+      return getFareSettings(args);
     }
   }
 };
