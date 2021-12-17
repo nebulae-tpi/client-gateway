@@ -7,7 +7,7 @@ const request = require('request');
 module.exports = {
   Query: {
     BusinessContactInfo: (root, args, context, info) => {
-
+ 
       const businessInits = [
         {
           name: 'NebulaE',
