@@ -60,6 +60,12 @@ const schema = makeExecutableSchema({ typeDefs, resolvers, schemaDirectives });
 const app = express();
 const jwtPublicKey = process.env.JWT_PUBLIC_KEY.replace(/\\n/g, '\n');
 
+// bodyParser is needed just for POST.
+app.use(bodyParser.json({ limit: '4mb' }));
+
+// bodyParser is needed just for POST.
+app.use(cors());
+
 // This code was commented due to the token validation will be performed with the @requireAuth directive
 // Additional middleware can be mounted at this point to run before Apollo.
 // app.use(process.env.GRAPHQL_HTTP_END_POINT, 
@@ -83,11 +89,7 @@ app.post(process.env.GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT_POST, (req, res) =>
 });
 
 
-// bodyParser is needed just for POST.
-app.use(bodyParser.json({ limit: '4mb' }));
 
-// bodyParser is needed just for POST.
-app.use(cors());
 
 // GraphQL: Schema
 const server = new ApolloServer({
