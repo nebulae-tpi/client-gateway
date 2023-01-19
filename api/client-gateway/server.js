@@ -84,7 +84,8 @@ app.get(process.env.GRAPHQL_LIVENESS_HTTP_END_POINT, function (req, res) {
 
 // Defines GET request that is going to be use by kubelet to identify if the gateway is HEALTHY
 app.post(process.env.GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT_POST, (req, res) =>{
-    console.log("LLEGA RQST ===> ", req.body)
+    console.log("LLEGA RQST ===> ", JSON.stringify(req.body))
+    //broker.getBroker().forward$("ClientBotLink", "clientgateway.graphql.mutation.ClientBotLinkMessageReceived")
     res.sendStatus(200) 
 });
 
