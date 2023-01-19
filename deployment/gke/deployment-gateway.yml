@@ -14,11 +14,14 @@ spec:
   selector:
     run: api-client-gateway
 ---
-apiVersion: extensions/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api-client-gateway
 spec:
+  selector:
+    matchLabels:
+      run: api-client-gateway
   replicas: 1
   template:
     metadata:
@@ -31,7 +34,7 @@ spec:
         - name: google-application-credentials
           mountPath: "/etc/GOOGLE_APPLICATION_CREDENTIALS"
           readOnly: true
-        image: DOCKERHUB/clientgateway:0.0.43
+        image: DOCKERHUB/clientgateway:0.0.44
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
