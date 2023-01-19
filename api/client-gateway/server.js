@@ -80,6 +80,18 @@ app.patch(process.env.GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT, function (req, re
     console.log("LLEGA RQST ===> ", req)
     res.sendStatus(200) 
 });
+
+// Defines GET request that is going to be use by kubelet to identify if the gateway is HEALTHY
+app.get(process.env.GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT_GET, function (req, res) {
+    console.log("LLEGA RQST ===> ", req)
+    res.sendStatus(200) 
+});
+
+// Defines GET request that is going to be use by kubelet to identify if the gateway is HEALTHY
+app.post(process.env.GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT_POST, function (req, res) {
+    console.log("LLEGA RQST ===> ", req)
+    res.sendStatus(200) 
+});
 // bodyParser is needed just for POST.
 app.use(cors());
 
