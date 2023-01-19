@@ -10,7 +10,7 @@ const { of } = require('rxjs');
 // const graphqlServer = require('apollo-server-express');
 // const graphqlExpress = graphqlServer.graphqlExpress;
 // const graphiqlExpress = graphqlServer.graphiqlExpress;
-// const bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 
 
 ////////////////////////
@@ -77,11 +77,14 @@ app.get(process.env.GRAPHQL_LIVENESS_HTTP_END_POINT, function (req, res) {
 
 
 // Defines GET request that is going to be use by kubelet to identify if the gateway is HEALTHY
-app.post(process.env.GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT_POST, function (req, res) {
-    console.log("LLEGA RQST ===> ", req.body)
+app.post(process.env.GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT_POST, (req, res) =>{
+    console.log("LLEGA RQST ===> ", req)
     res.sendStatus(200) 
 });
 
+
+// bodyParser is needed just for POST.
+app.use(bodyParser.json({ limit: '4mb' }));
 
 // bodyParser is needed just for POST.
 app.use(cors());
