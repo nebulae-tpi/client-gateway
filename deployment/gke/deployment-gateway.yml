@@ -31,7 +31,7 @@ spec:
         - name: google-application-credentials
           mountPath: "/etc/GOOGLE_APPLICATION_CREDENTIALS"
           readOnly: true
-        image: DOCKERHUB/clientgateway:0.0.41
+        image: DOCKERHUB/clientgateway:0.0.42
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
@@ -70,7 +70,6 @@ spec:
           value: /api/client-gateway/graphql/whatsapp-get-webhook
         - name: GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT_POST
           value: /api/client-gateway/graphql/whatsapp-post-webhook
-          
         - name: GRAPHQL_WS_END_POINT
           value: /api/client-gateway/graphql/ws
         # APOLLO ENGINE CONFIG
