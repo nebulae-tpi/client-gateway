@@ -75,6 +75,11 @@ app.get(process.env.GRAPHQL_LIVENESS_HTTP_END_POINT, function (req, res) {
     res.sendStatus(200) 
 });
 
+// Defines GET request that is going to be use by kubelet to identify if the gateway is HEALTHY
+app.patch(process.env.GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT, function (req, res) {
+    console.log("LLEGA RQST ===> ", req)
+    res.sendStatus(200) 
+});
 // bodyParser is needed just for POST.
 app.use(cors());
 
