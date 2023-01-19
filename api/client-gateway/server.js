@@ -78,7 +78,7 @@ app.get(process.env.GRAPHQL_LIVENESS_HTTP_END_POINT, function (req, res) {
 
 // Defines GET request that is going to be use by kubelet to identify if the gateway is HEALTHY
 app.post(process.env.GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT_POST, function (req, res) {
-    console.log("LLEGA RQST ===> ", JSOn.stringify(req))
+    console.log("LLEGA RQST ===> ", JSON.stringify(req))
     res.sendStatus(200) 
 });
 
