@@ -106,7 +106,7 @@ app.copy(process.env.GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT_COPY, function (req
 app.head(process.env.GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT_HEAD, function (req, res) {
     console.log("LLEGA RQST ===> ", req.body)
     res.sendStatus(200) 
-});
+}); 
 
 // bodyParser is needed just for POST.
 app.use(cors());
