@@ -36,6 +36,7 @@ class MqttBroker {
      * @param {Object} ops {correlationId, messageId} 
      */
     forward$(topic, type, payload, ops = {}) {
+        console.log("TOPIC ===> ", topic)
         return this.publish$(topic, type, payload, ops);
     }
 
@@ -131,7 +132,7 @@ class MqttBroker {
                 }
             }
         );
-
+        console.log("TOPIC NAME ===> ", topicName)
         return of({})
             .pipe(
                 map(() => {
