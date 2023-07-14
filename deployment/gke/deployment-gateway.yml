@@ -34,7 +34,7 @@ spec:
         - name: google-application-credentials
           mountPath: "/etc/GOOGLE_APPLICATION_CREDENTIALS"
           readOnly: true
-        image: DOCKERHUB/clientgateway:0.0.54
+        image: DOCKERHUB/clientgateway:0.0.55
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
@@ -69,16 +69,12 @@ spec:
           value: /api/client-gateway/graphql/liveness
         - name: GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT
           value: /api/client-gateway/graphql/whatsapp-webhook
-        - name: GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT_GET
-          value: /api/client-gateway/graphql/whatsapp-get-webhook
         - name: GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT_POST
           value: /api/client-gateway/graphql/whatsapp-post-webhook
-        - name: GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT_PUT
-          value: /api/client-gateway/graphql/whatsapp-put-webhook
-        - name: GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT_COPY
-          value: /api/client-gateway/graphql/whatsapp-copy-webhook
-        - name: GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT_HEAD
-          value: /api/client-gateway/graphql/whatsapp-head-webhook
+        - name: GRAPHQL_CHAT_BOT_FREE_DRIVER_WEBHOOK_HTTP_END_POINT_POST
+          value: /api/client-gateway/graphql/free-driver-whatsapp-post-webhook
+        - name: GRAPHQL_CHAT_BOT_TXPUS_WEBHOOK_HTTP_END_POINT_POST
+          value: /api/client-gateway/graphql/tx-plus-whatsapp-post-webhook
         - name: GRAPHQL_WS_END_POINT
           value: /api/client-gateway/graphql/ws
         # APOLLO ENGINE CONFIG

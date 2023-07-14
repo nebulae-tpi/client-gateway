@@ -91,7 +91,23 @@ app.post(process.env.GRAPHQL_CHAT_BOT_WEBHOOK_HTTP_END_POINT_POST, (req, res) =>
     res.sendStatus(200) 
 });
 
+// Defines GET request that is going to be use by kubelet to identify if the gateway is HEALTHY
+app.post(process.env.GRAPHQL_CHAT_BOT_FREE_DRIVER_WEBHOOK_HTTP_END_POINT_POST, (req, res) =>{
+    console.log("LLEGA RQST ===> ", JSON.stringify(req.body))
+    broker.forward$("ClientBotLink", "clientgateway.graphql.mutation.ClientBotFreeDriverLinkMessageReceived",{ args: req.body }).subscribe(res => {
+        console.log("RES ===> ", res)
+    })
+    res.sendStatus(200) 
+});
 
+// Defines GET request that is going to be use by kubelet to identify if the gateway is HEALTHY
+app.post(process.env.GRAPHQL_CHAT_BOT_TXPUS_WEBHOOK_HTTP_END_POINT_POST, (req, res) =>{
+    console.log("LLEGA RQST ===> ", JSON.stringify(req.body))
+    broker.forward$("ClientBotLink", "clientgateway.graphql.mutation.ClientBotTxPlusLinkMessageReceived",{ args: req.body }).subscribe(res => {
+        console.log("RES ===> ", res)
+    })
+    res.sendStatus(200) 
+});
 
 
 // GraphQL: Schema
