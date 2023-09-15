@@ -116,7 +116,7 @@ app.post(process.env.GRAPHQL_CHAT_BOT_NEW_TXPUS_WEBHOOK_HTTP_END_POINT_POST, (re
         console.log("RES ===> ", res)
     })
     res.sendStatus(200) 
-});
+}); 
 
 
 
