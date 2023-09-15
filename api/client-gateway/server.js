@@ -109,6 +109,16 @@ app.post(process.env.GRAPHQL_CHAT_BOT_TXPUS_WEBHOOK_HTTP_END_POINT_POST, (req, r
     res.sendStatus(200) 
 });
 
+// Defines GET request that is going to be use by kubelet to identify if the gateway is HEALTHY
+app.post(process.env.GRAPHQL_CHAT_BOT_NEW_TXPUS_WEBHOOK_HTTP_END_POINT_POST, (req, res) =>{
+    console.log("LLEGA RQST ===> ", JSON.stringify(req.body))
+    broker.forward$("ClientBotLink", "clientgateway.graphql.mutation.ClientBotNewTxPlusLinkMessageReceived",{ args: req.body }).subscribe(res => {
+        console.log("RES ===> ", res)
+    })
+    res.sendStatus(200) 
+});
+
+
 
 // GraphQL: Schema
 const server = new ApolloServer({
