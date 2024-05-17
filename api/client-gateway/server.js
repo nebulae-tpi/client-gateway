@@ -102,9 +102,19 @@ app.post(process.env.GRAPHQL_CHAT_BOT_FREE_DRIVER_WEBHOOK_HTTP_END_POINT_POST, (
 
 app.post(process.env.GRAPHQL_CHAT_BOT_TX_BOGOTA_WEBHOOK_HTTP_END_POINT_POST, (req, res) =>{
     console.log("LLEGA RQST ===> ", JSON.stringify(req.body))
-    broker.forward$("ClientBotLink", "clientgateway.graphql.mutation.ClientBotTxPlusBogotaLinkMessageReceived",{ args: req.body }).subscribe(res => {
-        console.log("RES ===> ", res)
-    })
+    for (let index = 0; index < ((req.body.entry || [])).length; index++) {
+        const entry = ((req.body.entry || []))[index];
+        for (let indexEntry = 0; indexEntry < entry.changes.length; indexEntry++) {
+            const change = entry.changes[indexEntry];
+            broker.forward$("ClientBotLink", "clientgateway.graphql.mutation.ClientBotTxPlusBogotaLinkMessageReceived",{ args: change.value }).subscribe(res => {
+                console.log("RES ===> ", res)
+            })
+            
+        }
+        
+        
+    }
+    
     res.sendStatus(200) 
 });
 
