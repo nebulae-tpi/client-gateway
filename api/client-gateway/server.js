@@ -130,9 +130,16 @@ app.post(process.env.GRAPHQL_CHAT_BOT_TXPUS_WEBHOOK_HTTP_END_POINT_POST, (req, r
 // Defines GET request that is going to be use by kubelet to identify if the gateway is HEALTHY
 app.post(process.env.GRAPHQL_CHAT_BOT_NEW_TXPUS_WEBHOOK_HTTP_END_POINT_POST, (req, res) =>{
     console.log("LLEGA RQST ===> ", JSON.stringify(req.body))
-    broker.forward$("ClientBotLink", "clientgateway.graphql.mutation.ClientBotNewTxPlusLinkMessageReceived",{ args: req.body }).subscribe(res => {
-        console.log("RES ===> ", res)
-    })
+    for (let index = 0; index < ((req.body.entry || [])).length; index++) {
+        const entry = ((req.body.entry || []))[index];
+        for (let indexEntry = 0; indexEntry < entry.changes.length; indexEntry++) {
+            const change = entry.changes[indexEntry];
+            broker.forward$("ClientBotLink", "clientgateway.graphql.mutation.ClientBotNewTxPlusLinkMessageReceived",{ args: change.value }).subscribe(res => {
+                console.log("RES ===> ", res)
+            })
+            
+        }   
+    }
     res.sendStatus(200) 
 }); 
 
