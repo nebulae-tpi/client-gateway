@@ -124,7 +124,7 @@ app.post(process.env.GRAPHQL_CHAT_BOT_TX_VILLAVICENCIO_WEBHOOK_HTTP_END_POINT_PO
         const entry = ((req.body.entry || []))[index];
         for (let indexEntry = 0; indexEntry < entry.changes.length; indexEntry++) {
             const change = entry.changes[indexEntry];
-            broker.forward$("ClientBotLink", "clientgateway.graphql.mutation.ClientBotTxPlusBogotaLinkMessageReceived",{ args: change.value }).subscribe(res => {
+            broker.forward$("ClientBotLink", "clientgateway.graphql.mutation.ClientBotTxPlusVillavicencioLinkMessageReceived",{ args: change.value }).subscribe(res => {
                 console.log("RES ===> ", res)
             })
             
